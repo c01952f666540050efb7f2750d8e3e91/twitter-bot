@@ -5,6 +5,7 @@ import os
 # Load .env
 load_dotenv()
 bearer = os.getenv("BEARER")
+ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 
 # Universal immutables
 baseurl = 'https://api.twitter.com'
@@ -77,12 +78,12 @@ def responseParser(response):
 
     
 
-userid = 1161639845531455489
+userid = ledger_acc_id
 headers = {"Authorization": f"Bearer {bearer}"}
 
 # twitter_agent = reqBuilder(1161639845531455489, bearer)
 
-449517989
+# 449517989 - example spam acc
 # url = baseurl+'/2/users'+f'/{userid}'+'/mentions'
 url = baseurl+'/2/users'+f'/{str(449517989)}'+'/tweets'
 # url = baseurl+'/oauth/request_token'

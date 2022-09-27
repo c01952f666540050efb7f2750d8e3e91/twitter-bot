@@ -1,4 +1,4 @@
-# Twitter Bot - "Ledger Protect"
+# Twitter Bot - Spam and Scam protection
 
 ### Concept
 
