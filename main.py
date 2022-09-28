@@ -30,6 +30,10 @@ epdata = {
     'getUserMentions': {
         'method': 'GET',
         'ep': '/2/users/:id/mentions'
+    },
+    'getIdByUser': {
+        'method': 'GET',
+        'ep': ''
     }
 }
 
@@ -47,6 +51,9 @@ class reqBuilder:
         self.replace = {
             ':id': self.subject,
         }
+
+        # Specific Auth Types
+        self.bearer_auth = {"Authorization": f"Bearer {bearer}"}
 
     # Injection of data into Endpoint URLs
     def parsedEPData(self, epType) -> str:
@@ -71,6 +78,18 @@ class reqBuilder:
         # Return data
         return reqURL
 
+    def sendRequest(self, epType) -> dict:
+        
+
+        # Make sure to get the right method - must be better way than an if elif tree
+        if epdata[epType]['method'] == 'GET':
+            
+            # Return processed data
+            return req.get(self.getURL(epType), headers=self.bearer_auth).json()
+
+        elif self.parsedEPData['method'] == 'POST':
+            pass
+
 
 # Response Parser
 def responseParser(response):
@@ -81,17 +100,18 @@ def responseParser(response):
 userid = ledger_acc_id
 headers = {"Authorization": f"Bearer {bearer}"}
 
-# twitter_agent = reqBuilder(1161639845531455489, bearer)
-
+twitter_agent = reqBuilder(1161639845531455489, bearer)
+result = twitter_agent.sendRequest('getUserTweets')
+print(result)
+exit()
 # 449517989 - example spam acc
 # url = baseurl+'/2/users'+f'/{userid}'+'/mentions'
-url = baseurl+'/2/users'+f'/{str(449517989)}'+'/tweets'
+url = baseurl+'/2/users'+f'/{str(ledger_acc_id)}'+'/tweets'
 # url = baseurl+'/oauth/request_token'
 result = req.get(url, headers=headers).json()
 print(result)
 
 
-exit()
 def getIDByUser(user) -> str:
     pass
 
