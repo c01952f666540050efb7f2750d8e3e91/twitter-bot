@@ -2,44 +2,27 @@ import requests as req
 from dotenv import load_dotenv
 import os
 import urlexpander
+from twitterDS.endpoints import *
 
 
 # Load .env
 load_dotenv()
 bearer = os.getenv("BEARER")
+support_acc_id = os.getenv("SUPPORT_ACC_ID")
 ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 
-# Universal immutables
-baseurl = 'https://api.twitter.com'
 
-epdata = {
-    'getTweets': {
-        'method': req.get,
-        'ep': '/2/tweets'
-    },
-    'postTweet': {
-        'method': req.post,
-        'ep': '/2/tweets'
-    },
-    'deleteTweet': {
-        'method':  req.delete,
-        'ep': '/2/tweets'
-    },
-    'getUserTweets': {
-        'method': req.get,
-        'ep': '/2/users/:id/tweets'
-    },
-    'getUserMentions': {
-        'method': req.get,
-        'ep': '/2/users/:id/mentions'
-    },
-    'getIdByUser': {
-        'method': req.get,
-        'ep': ''
-    }
-}
+
+
+def epInfo(epType) -> dict:
+        return epdata[epType]
+
 
 tweetCriteria = {
+    'answered': {
+        'condition': None,
+        'action': None
+    },
     'link': {
         'condition': None,
         'action': None
@@ -47,13 +30,34 @@ tweetCriteria = {
     'message': {
         'condition': None,
         'action': None
+    },
+    'ignore': {
+        'condition': None,
+        'action': None
     }
-
 }
 
-def epInfo(epType) -> dict:
-        return epdata[epType]
+linkWatch = {
+    
+}
 
+def linkShared(text):
+
+    # Since all links on twitter are shortened, we look for the shortened tweet
+    if 't.co' in text:
+        return True
+    
+    else:
+        return False
+
+def answered(text, responder):
+    pass
+
+def includeLink(text, linkedURL):
+    pass
+
+def askMessage(text, solicitor):
+    pass
 
 # Request Builder
 class reqBuilder:
@@ -83,7 +87,6 @@ class reqBuilder:
         # Return the data required
         return ret_data
         
-
     def getURL(self, epType) -> str:
         
         # Get the relevant request URL
@@ -91,21 +94,39 @@ class reqBuilder:
 
         # Return data
         return reqURL
+    
+    def parsedParams(self, epType, params) -> dict:
+        # Add all the params required for request
+        pass
 
     def sendRequest(self, epType) -> dict:
 
-        return epdata[epType]['method'](self.getURL(epType), headers=self.bearer_auth).json()
+        # Send request - Currently only sending with bearer auth.
+        # TODO - Assign correct authentication when required
+        return epdata[epType]['method'](
+            self.getURL(epType), 
+            headers=self.bearer_auth,
+            params={}
+            ).json()
 
 
 
 # Response Parser
 def responseParser(response, checkType):
+
+    # For all the tweets in the response
     for tweet in result['data']:
+        
+        for condition in tweetCriteria.keys():
+            pass
+            
+        # Link is included in tweet
         if "t.co" in tweet['text']:
             pass
+
         else:
             # Tweets that do not fall within our criteria
-
+            pass
     
 
 headers = {"Authorization": f"Bearer {bearer}"}
@@ -113,29 +134,24 @@ headers = {"Authorization": f"Bearer {bearer}"}
 twitter_agent = reqBuilder(ledger_acc_id, bearer)
 # result = twitter_agent.sendRequest('getUserMentions')
 result = twitter_agent.sendRequest('getUserMentions')
+print(result)
+exit()
+
 for tweets in result['data']:
     
     if "t.co" in tweets['text']:
         print(tweets['id'])
         print(tweets['text'])
-
+        print("-----")
     else:
         print(tweets)
     
 
-# print(urlexpander.expand("https://t.co/ayTLrUnGQy"))
+
 exit()
-# 449517989 - example spam acc
-# url = baseurl+'/2/users'+f'/{userid}'+'/mentions'
-url = baseurl+'/2/users'+f'/{str(ledger_acc_id)}'+'/tweets'
-# url = baseurl+'/oauth/request_token'
-result = req.get(url, headers=headers).json()
-print(result)
 
 
-def getIDByUser(user) -> str:
-    pass
-
+# Main Twitter Bot Class
 class twitterBot:
     def __init__(self) -> None:
         pass
