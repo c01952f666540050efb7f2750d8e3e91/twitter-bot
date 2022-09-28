@@ -79,7 +79,6 @@ class reqBuilder:
         return reqURL
 
     def sendRequest(self, epType) -> dict:
-        
 
         # Make sure to get the right method - must be better way than an if elif tree
         if epdata[epType]['method'] == 'GET':
@@ -101,8 +100,9 @@ userid = ledger_acc_id
 headers = {"Authorization": f"Bearer {bearer}"}
 
 twitter_agent = reqBuilder(1161639845531455489, bearer)
-result = twitter_agent.sendRequest('getUserTweets')
-print(result)
+result = twitter_agent.sendRequest('getUserMentions')
+for x in result['data']:
+    print(x)
 exit()
 # 449517989 - example spam acc
 # url = baseurl+'/2/users'+f'/{userid}'+'/mentions'

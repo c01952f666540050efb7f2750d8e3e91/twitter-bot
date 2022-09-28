@@ -2,7 +2,7 @@
 
 ### Concept
 
-This twitter bot is made to engage with scammers that are constantly attempting to scam users via the Ledger twitter account. The general idea would be to either interact with our tweets automatically (like a pinned post on Reddit), or to directly reply to twitter bots.
+This twitter bot is made to engage with scammers that are constantly attempting to scam users via a twitter account. The general idea would be to either interact with our tweets automatically (like a pinned post on Reddit), or to directly reply to twitter bots.
 
 ### Audience
 
