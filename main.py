@@ -1,6 +1,8 @@
 import requests as req
 from dotenv import load_dotenv
 import os
+import urlexpander
+
 
 # Load .env
 load_dotenv()
@@ -12,29 +14,41 @@ baseurl = 'https://api.twitter.com'
 
 epdata = {
     'getTweets': {
-        'method': 'GET',
+        'method': req.get,
         'ep': '/2/tweets'
     },
     'postTweet': {
-        'method': 'POST',
+        'method': req.post,
         'ep': '/2/tweets'
     },
     'deleteTweet': {
-        'method':  'DELETE',
+        'method':  req.delete,
         'ep': '/2/tweets'
     },
     'getUserTweets': {
-        'method': 'GET',
+        'method': req.get,
         'ep': '/2/users/:id/tweets'
     },
     'getUserMentions': {
-        'method': 'GET',
+        'method': req.get,
         'ep': '/2/users/:id/mentions'
     },
     'getIdByUser': {
-        'method': 'GET',
+        'method': req.get,
         'ep': ''
     }
+}
+
+tweetCriteria = {
+    'link': {
+        'condition': None,
+        'action': None
+    },
+    'message': {
+        'condition': None,
+        'action': None
+    }
+
 }
 
 def epInfo(epType) -> dict:
@@ -80,29 +94,36 @@ class reqBuilder:
 
     def sendRequest(self, epType) -> dict:
 
-        # Make sure to get the right method - must be better way than an if elif tree
-        if epdata[epType]['method'] == 'GET':
-            
-            # Return processed data
-            return req.get(self.getURL(epType), headers=self.bearer_auth).json()
+        return epdata[epType]['method'](self.getURL(epType), headers=self.bearer_auth).json()
 
-        elif self.parsedEPData['method'] == 'POST':
-            pass
 
 
 # Response Parser
-def responseParser(response):
-    pass
+def responseParser(response, checkType):
+    for tweet in result['data']:
+        if "t.co" in tweet['text']:
+            pass
+        else:
+            # Tweets that do not fall within our criteria
 
     
 
-userid = ledger_acc_id
 headers = {"Authorization": f"Bearer {bearer}"}
 
-twitter_agent = reqBuilder(1161639845531455489, bearer)
+twitter_agent = reqBuilder(ledger_acc_id, bearer)
+# result = twitter_agent.sendRequest('getUserMentions')
 result = twitter_agent.sendRequest('getUserMentions')
-for x in result['data']:
-    print(x)
+for tweets in result['data']:
+    
+    if "t.co" in tweets['text']:
+        print(tweets['id'])
+        print(tweets['text'])
+
+    else:
+        print(tweets)
+    
+
+# print(urlexpander.expand("https://t.co/ayTLrUnGQy"))
 exit()
 # 449517989 - example spam acc
 # url = baseurl+'/2/users'+f'/{userid}'+'/mentions'
