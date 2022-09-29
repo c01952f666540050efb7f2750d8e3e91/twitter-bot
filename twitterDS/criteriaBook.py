@@ -17,20 +17,26 @@ def linkShared(text):
     # Since all links on twitter are shortened, we look for the shortened tweet
     if tco in text:
         
-        shortURL = url_prefix+text.split(url_prefix)[-1]
-        print(urlexpander.expand(shortURL))
-        url_candidate = urlexpander.expand(shortURL)
+        # TODO - We have to remember this might not be the only link
+        urlList = url_prefix+text.split(url_prefix)
 
-        for domain in domainBook:
-            if domain in url_candidate:
-                print(f"Someone linked: {domain}")
-                
-                # They shared a link!
-                ret_dat = {
-                        'bool': True,
-                        'linkType': domain,
-                        'fullLink': url_candidate
-                    }
+        for shortURL in urlList:
+            shortURL = url_prefix + shortURL
+            print(f"ShortURL: {shortURL}")
+            
+            print(urlexpander.expand(shortURL))
+            url_candidate = urlexpander.expand(shortURL)
+
+            for domain in domainBook:
+                if domain in url_candidate:
+                    print(f"Someone linked: {domain}")
+                    
+                    # They shared a link!
+                    ret_dat = {
+                            'bool': True,
+                            'linkType': domain,
+                            'fullLink': url_candidate
+                        }
         
     return ret_dat
 
@@ -42,3 +48,22 @@ def includeLink(text):
 
 def askMessage(text):
     pass
+
+tweetCriteria = {
+    'answered': {
+        'condition': None,
+        'action': None
+    },
+    'link': {
+        'condition': linkShared,
+        'action': None
+    },
+    'message': {
+        'condition': None,
+        'action': None
+    },
+    'ignore': {
+        'condition': None,
+        'action': None
+    }
+}
