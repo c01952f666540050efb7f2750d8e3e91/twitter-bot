@@ -19,6 +19,7 @@ def linkShared(text):
         
         # TODO - We have to remember this might not be the only link
         urlList = url_prefix+text.split(url_prefix)
+        
 
         for shortURL in urlList:
             shortURL = url_prefix + shortURL
