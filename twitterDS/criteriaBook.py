@@ -2,7 +2,7 @@
 import urlexpander
 
 domainBook = ['twitter.com', 't.me', 'telegram.me', 'docs.google.com']
-ledgerBook = ['ledger.com', 'ledger.fr']
+
 url_prefix = "https://"
 tco = 't.co'
 
