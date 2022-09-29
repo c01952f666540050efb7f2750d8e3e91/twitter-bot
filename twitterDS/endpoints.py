@@ -29,7 +29,7 @@ epdata = {
         'method': req.get,
         'ep': '/2/users/by',
         'params': {
-            'usernames': None
+            'usernames': []
         }
     }
 }

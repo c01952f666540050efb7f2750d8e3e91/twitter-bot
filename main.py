@@ -2,16 +2,16 @@ import requests as req
 from dotenv import load_dotenv
 import os
 import urlexpander
-from twitterDS.endpoints import *
 
+# Internal Imports
+from twitterDS.endpoints import *
+from twitterDS.criteriaBook import *
 
 # Load .env
 load_dotenv()
 bearer = os.getenv("BEARER")
 support_acc_id = os.getenv("SUPPORT_ACC_ID")
 ledger_acc_id = os.getenv("LEDGER_ACC_ID")
-
-
 
 
 def epInfo(epType) -> dict:
@@ -24,7 +24,7 @@ tweetCriteria = {
         'action': None
     },
     'link': {
-        'condition': None,
+        'condition': linkShared,
         'action': None
     },
     'message': {
@@ -40,24 +40,6 @@ tweetCriteria = {
 linkWatch = {
     
 }
-
-def linkShared(text):
-
-    # Since all links on twitter are shortened, we look for the shortened tweet
-    if 't.co' in text:
-        return True
-    
-    else:
-        return False
-
-def answered(text, responder):
-    pass
-
-def includeLink(text, linkedURL):
-    pass
-
-def askMessage(text, solicitor):
-    pass
 
 # Request Builder
 class reqBuilder:
@@ -95,46 +77,63 @@ class reqBuilder:
         # Return data
         return reqURL
     
-    def parsedParams(self, epType, params) -> dict:
+    def parsedParams(self, epType, **params) -> dict:
         # Add all the params required for request
-        pass
 
-    def sendRequest(self, epType) -> dict:
+        # If there are relevant params we want to use
+        if epInfo(epType)['params']:
+            # Match params
+            print(epInfo(epType)['params'])
+            print(params)
+            
+        # print(epInfo(epType)['params'])
+        # exit()
+        return {}
+
+    def sendRequest(self, epType, **params) -> dict:
 
         # Send request - Currently only sending with bearer auth.
         # TODO - Assign correct authentication when required
         return epdata[epType]['method'](
             self.getURL(epType), 
             headers=self.bearer_auth,
-            params={}
+            params=params
             ).json()
 
 
 
 # Response Parser
-def responseParser(response, checkType):
+def responseParser(response, checkType=None):
 
     # For all the tweets in the response
     for tweet in result['data']:
+        print("---"*20)
+        print(tweet)
         
+        # Check all conditions
         for condition in tweetCriteria.keys():
-            pass
             
-        # Link is included in tweet
-        if "t.co" in tweet['text']:
-            pass
+            # If there is a condition listed that has happened - temporarily here to avoid errors during building
+            if tweetCriteria[condition]['condition']:
+                ret_dat = tweetCriteria[condition]['condition'](tweet['text'])
+                
+                if ret_dat['bool'] is True:
 
-        else:
-            # Tweets that do not fall within our criteria
-            pass
+                    print(ret_dat)
+        
+        print("---"*20)
+
     
 
 headers = {"Authorization": f"Bearer {bearer}"}
 
-twitter_agent = reqBuilder(ledger_acc_id, bearer)
+twitter_agent = reqBuilder(support_acc_id, bearer)
 # result = twitter_agent.sendRequest('getUserMentions')
+# GetIdBy
 result = twitter_agent.sendRequest('getUserMentions')
-print(result)
+
+print(responseParser(result))
+# print(result)
 exit()
 
 for tweets in result['data']:
