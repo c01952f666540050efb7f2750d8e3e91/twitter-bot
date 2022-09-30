@@ -1,4 +1,4 @@
-# import re
+import re
 import urlexpander
 
 domainBook = ['twitter.com', 't.me', 'telegram.me', 'docs.google.com']
@@ -6,38 +6,40 @@ domainBook = ['twitter.com', 't.me', 'telegram.me', 'docs.google.com']
 url_prefix = "https://"
 tco = 't.co'
 
+def urlSearch(stringinput):
+ #regular expression
+ regularex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|(([^\s()<>]+|(([^\s()<>]+)))))+(?:(([^\s()<>]+|(([^\s()<>]+))))|[^\s`!()[]{};:'\".,<>?«»“”‘’]))"
+ 
+ #finding the url in passed string
+ urlsrc = re.findall(regularex,stringinput)
+ 
+ #return the found website url
+ return [url[0] for url in urlsrc]
+
 def linkShared(text):
     ret_dat = {
         'bool': False,
-        'linkType': None,
-        'fullLink': None
+        'fullLinkS': []
     }
     
 
     # Since all links on twitter are shortened, we look for the shortened tweet
     if tco in text:
         
-        # TODO - We have to remember this might not be the only link
-        urlList = url_prefix+text.split(url_prefix)
+        # Get all the urls in text
+        urlList = urlSearch(text)
+        expandedURLList = [urlexpander.expand(x) for x in urlList]
 
-
-        for shortURL in urlList:
-            shortURL = url_prefix + shortURL
-            print(f"ShortURL: {shortURL}")
-            
-            print(urlexpander.expand(shortURL))
-            url_candidate = urlexpander.expand(shortURL)
-
+        # For all the urls in the list
+        for url in expandedURLList:
             for domain in domainBook:
-                if domain in url_candidate:
-                    print(f"Someone linked: {domain}")
-                    
-                    # They shared a link!
-                    ret_dat = {
-                            'bool': True,
-                            'linkType': domain,
-                            'fullLink': url_candidate
-                        }
+                if domain in url:
+                    #  A DOMAIN HAS A HIT
+                    ret_dat['bool'] = True
+
+                    # ADD IT TO THE LIST
+                    ret_dat['fullLinkS'].append(url)
+
         
     return ret_dat
 

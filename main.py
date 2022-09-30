@@ -1,7 +1,9 @@
 import requests as req
 from dotenv import load_dotenv
 import os
-import urlexpander
+import requests_oauthlib
+
+
 
 # Internal Imports
 from twitterDS.endpoints import *
@@ -16,6 +18,8 @@ ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 
 
 
+
+
 # This could be a dictionary where we watch for the dangerous links
 linkWatch = {}
 
@@ -26,8 +30,6 @@ def responseParser(response, checkType=None):
 
     # For all the tweets in the response
     for tweet in result['data']:
-        print("---"*20)
-        print(tweet)
         
         # Check all conditions
         for condition in tweetCriteria.keys():
@@ -36,10 +38,16 @@ def responseParser(response, checkType=None):
             if tweetCriteria[condition]['condition']:
                 ret_dat = tweetCriteria[condition]['condition'](tweet['text'])
                 
+                # Bot has found something that matches the relevant conditions
                 if ret_dat['bool'] is True:
 
+                    # Debug print
                     print(ret_dat)
-        
+                    print(tweet['id'])
+
+                    # Perform some action
+                    post_dat = tweetCriteria[condition]['action']()
+
         print("---"*20)
 
     
@@ -47,10 +55,10 @@ def responseParser(response, checkType=None):
 headers = {"Authorization": f"Bearer {bearer}"}
 
 twitter_agent = reqBuilder(support_acc_id, bearer)
-# result = twitter_agent.sendRequest('getUserMentions')
-# GetIdBy
-result = twitter_agent.sendRequest('getUserMentions')
+twitter_agent.sendRequest('postTweet')
 
+exit()
+result = twitter_agent.sendRequest('getUserMentions')
 print(responseParser(result))
 
 # Main Twitter Bot Class
