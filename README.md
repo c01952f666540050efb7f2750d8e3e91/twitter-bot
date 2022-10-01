@@ -6,7 +6,7 @@ This twitter bot is made to engage with scammers that are constantly attempting 
 
 ### Audience
 
-While this is sometihng that many other enterprise entites could use, this is currently slated for in-house use, but the tech support team.
+While this is sometihng that many other enterprise entites could use, this is currently slated for in-house use, with the tech support team.
 
 ### Inputs / Outputs
 
@@ -14,27 +14,21 @@ While this is sometihng that many other enterprise entites could use, this is cu
 Main account and Support account tweets and replies.
 
 ##### Outputs
-Tweet an initial response that advises that scammers are always attempting to scam users via replies and DMs
+Tweet an initial response that advises that scammers are always attempting to scam users via replies and DMs.
+We are currently building a database of responses, that I will put into a data structure in the responses.py file.
 
 Reply to scam accounts that identify potential scammers (that may try to engage via google form links or built-in "send a message" links)
+There are many more ways that they might do so, but it will be important to know how to engage them.
 
 ### Flowchart
 
 List of "watched" tweets (Latest tweets? Most engaged tweets?)
-*Note* - There is currently no way to get tweets older than 7 days
+*Note* - We are currently only getting the last 10 tweets
 ->
-Poll REST endpoint to find all the latest replies
+Poll REST endpoint to find all the latest replies (only last 10 at the moment)
 -> 
-Identify new replies that have not be engaged with
+Identify new replies that have not be engaged with (and that need to be engaged with)
 -> 
 Remove user tweets (that we do not want the bot to interact with)
 ->
-reply to scam tweets (?)
-
-
-### Technical Feasibility
-
-The feasibility of automatically replying to an existing account is very easy. The main technical hurdle I am currently investigating, is the ability to very specifically target accounts that are **not** users, but scammers that are trying to scam users.
-
-We will always be behind, with regard to this, as we will want to make sure that we do not go after any regular users.
-
+reply to scam tweets from database

@@ -3,9 +3,9 @@ import urlexpander
 
 domainBook = ['twitter.com', 't.me', 'telegram.me', 'docs.google.com']
 
-url_prefix = "https://"
 tco = 't.co'
 
+# Using regex to search for links
 def urlSearch(stringinput):
  #regular expression
  regularex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|(([^\s()<>]+|(([^\s()<>]+)))))+(?:(([^\s()<>]+|(([^\s()<>]+))))|[^\s`!()[]{};:'\".,<>?«»“”‘’]))"
@@ -55,6 +55,12 @@ def includeLink(text):
 def askMessage(text):
     pass
 
+def composeReply():
+    return {
+        'replyText': ''
+    }
+
+# Currently relatively arbitrary for testing purposes
 tweetCriteria = {
     'answered': {
         'condition': None,
