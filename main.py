@@ -3,8 +3,6 @@ from dotenv import load_dotenv
 import os
 import requests_oauthlib
 
-
-
 # Internal Imports
 from twitterDS.endpoints import *
 from twitterDS.criteriaBook import *
