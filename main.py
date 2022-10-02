@@ -16,14 +16,11 @@ bearer = os.getenv("BEARER")
 support_acc_id = os.getenv("SUPPORT_ACC_ID")
 ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 
-
-
-
+agent_key = os.getenv("API_KEY")
+agent_secret = os.getenv("API_SECRET")
 
 # This could be a dictionary where we watch for the dangerous links
 linkWatch = {}
-
-
 
 # Response Parser
 def responseParser(response, checkType=None):
@@ -47,6 +44,7 @@ def responseParser(response, checkType=None):
 
                     # Perform some action
                     post_dat = tweetCriteria[condition]['action']()
+                    
 
         print("---"*20)
 

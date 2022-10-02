@@ -2,4 +2,6 @@
 # from requests_oauthlib import OAuth2Session
 
 # I will need to contstruct a authoriseurl
-requestScope = "tweet."
+import requests as req
+
+from twitterDS.endpoints import baseurl, epdata

@@ -1,8 +1,8 @@
 import re
 import urlexpander
 
+# Book of domains we are looking into
 domainBook = ['twitter.com', 't.me', 'telegram.me', 'docs.google.com']
-
 tco = 't.co'
 
 # Using regex to search for links
@@ -17,6 +17,8 @@ def urlSearch(stringinput):
  return [url[0] for url in urlsrc]
 
 def linkShared(text):
+
+    # The data we are looking to return
     ret_dat = {
         'bool': False,
         'fullLinkS': []
@@ -68,7 +70,8 @@ tweetCriteria = {
     },
     'link': {
         'condition': linkShared,
-        'action': None
+        'action': None,
+        'authType': 'oauth'
     },
     'message': {
         'condition': None,
