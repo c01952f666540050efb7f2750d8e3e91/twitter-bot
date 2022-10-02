@@ -40,7 +40,7 @@ def linkShared(text):
                     ret_dat['bool'] = True
 
                     # ADD IT TO THE LIST
-                    ret_dat['fullLinkS'].append(url)
+                    ret_dat['fullLinks'].append(url)
 
         
     return ret_dat

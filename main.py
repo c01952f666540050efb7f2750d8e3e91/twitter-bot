@@ -25,6 +25,8 @@ linkWatch = {}
 # Response Parser
 def responseParser(response, checkType=None):
 
+    tweetList = []
+
     # For all the tweets in the response
     for tweet in result['data']:
         
@@ -43,22 +45,32 @@ def responseParser(response, checkType=None):
                     print(tweet['id'])
 
                     # Perform some action
-                    post_dat = tweetCriteria[condition]['action']()
-                    
+                    # post_dat = tweetCriteria[condition]['action']()
+            else:
+
+                # To make sure we have a specific list
+                ret_dat = {'fullLinks': []}
 
         print("---"*20)
 
+        tweetList.append({
+            tweet['id']: {
+                'originalText': tweet['text'],
+                'links': ret_dat['fullLinks']
+            }
+        })
     
 
 headers = {"Authorization": f"Bearer {bearer}"}
 
 twitter_agent = reqBuilder(support_acc_id, bearer)
-twitter_agent.sendRequest('postTweet')
+# twitter_agent.sendRequest('getUserMentions')
 
-exit()
 result = twitter_agent.sendRequest('getUserMentions')
-print(responseParser(result))
 
+responseParser(result)
+# print(result)
+exit()
 # Main Twitter Bot Class
 class twitterBot:
     def __init__(self) -> None:

@@ -55,12 +55,12 @@ class reqBuilder:
 
     def sendRequest(self, epType, **params) -> dict:
         # Adding headers - arbitrary currently
-        headers = {}.update(self.bearer_auth)
+        # headers = {}.update()
 
         # Send request - Currently only sending with bearer auth.
         # TODO - Assign correct authentication when required
         return epdata[epType]['method'](
             self.getURL(epType), 
-            headers=headers,
+            headers=self.bearer_auth,
             params=params
             ).json()
