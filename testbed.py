@@ -1,9 +1,6 @@
-# from oauthlib.oauth2 import BackendApplicationClient
-# from requests_oauthlib import OAuth2Session
-
 # I will need to contstruct a authoriseurl
 import requests as req
-from twitterDS.endpoints import baseurl, epdata
+from twitterLibs.endpoints import baseurl, epdata
 from dotenv import load_dotenv
 import os
 from requests_oauthlib import OAuth1Session
@@ -18,10 +15,11 @@ ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 agent_key = os.getenv("API_KEY")
 agent_secret = os.getenv("API_SECRET")
 
-# Get request token
+# Get request token - This can be done at the start of every session?
 request_token_url = "https://api.twitter.com/oauth/request_token?oauth_callback=oob&x_auth_access_type=write"
 oauth = OAuth1Session(agent_key, client_secret=agent_secret)
 
+# Attempt to fetch
 try:
     fetch_response = oauth.fetch_request_token(request_token_url)
 except ValueError:
@@ -29,11 +27,14 @@ except ValueError:
         "There may have been an issue with the consumer_key or consumer_secret you entered."
     )
 
+# set variables
 resource_owner_key = fetch_response.get("oauth_token")
 resource_owner_secret = fetch_response.get("oauth_token_secret")
+
+# debug print
 print("Got OAuth token: %s" % resource_owner_key)
 
-# Get authorization
+# Get authorization - Requires log in!
 base_authorization_url = "https://api.twitter.com/oauth/authorize"
 authorization_url = oauth.authorization_url(base_authorization_url)
 print("Please go here and authorize: %s" % authorization_url)

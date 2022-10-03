@@ -4,7 +4,7 @@ import requests as req
 baseurl = 'https://api.twitter.com'
 
 # Endpoint package
-epdata = {
+epData = {
     'getTweets': {
         'method': req.get,
         'ep': '/2/tweets'
@@ -30,6 +30,17 @@ epdata = {
         'ep': '/2/users/by',
         'params': {
             'usernames': []
+        }
+    }
+}
+
+# Not used yet
+oauthData = {
+    'requestToken': {
+        'ep': '/oauth/request_token',
+        'params': {
+            'oauth_callback': 'oob',
+            'x_auth_access_type': 'write'
         }
     }
 }

@@ -4,9 +4,9 @@ import os
 import requests_oauthlib
 
 # Internal Imports
-from twitterDS.endpoints import *
-from twitterDS.criteriaBook import *
-from twitterDS.requestBuilder import reqBuilder
+from twitterLibs.endpoints import *
+from twitterLibs.criteriaBook import *
+from twitterLibs.requestBuilder import reqBuilder
 
 # Load .env
 load_dotenv()

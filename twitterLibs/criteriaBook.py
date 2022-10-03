@@ -41,7 +41,6 @@ def linkShared(text):
 
                     # ADD IT TO THE LIST
                     ret_dat['fullLinks'].append(url)
-
         
     return ret_dat
 
