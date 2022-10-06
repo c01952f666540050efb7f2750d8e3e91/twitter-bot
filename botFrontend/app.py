@@ -20,5 +20,16 @@ app.layout = html.Div([
 def providePinCode(inputValue):
     return f'Pin Code {inputValue}'
 
+@app.callback(
+    Output(component_id="oauth-link", component_property="children"),
+    Input(component_id="")
+)
+
+# We will want to make multiple callbacks
+# The first will be for authentication and to begin running the bot
+# We will want to know how close we are to the rate limit as well as
+# Who we're responding to
+# It will be nice to know what kind of scams are out there as well
+
 # To Run, use below:
-app.run_server(debug=True)
+# app.run_server(debug=True)
