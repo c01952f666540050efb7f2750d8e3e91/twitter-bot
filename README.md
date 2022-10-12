@@ -2,6 +2,8 @@
 
 To set up this twitter bot, it is currently run through a dash frontend, that interacts with the Twitter API to identify and respond to specific conditions. The conditions and criteria that are responded to are in the 'criteriaBook.py' file.
 
+I seem to have forgotten what I'm doing lol.
+
 ## Requirements
 
 Python 3

@@ -1,6 +1,7 @@
 # EXTERNAL IMPORTS
 import requests as req
-from twitterLibs.endpoints import baseurl, epdata
+# from endpoints import baseurl, epdata
+# import endpoints
 from dotenv import load_dotenv
 import os
 from requests_oauthlib import OAuth1Session
@@ -21,6 +22,8 @@ agent_secret = os.getenv("API_SECRET")
 request_token_url = "https://api.twitter.com/oauth/request_token?oauth_callback=oob&x_auth_access_type=write"
 oauth = OAuth1Session(agent_key, client_secret=agent_secret)
 
+baseurl = 'https://api.twitter.com'
+
 # Attempt to fetch
 try:
     fetch_response = oauth.fetch_request_token(request_token_url)
@@ -38,7 +41,8 @@ def epInfo(epType) -> dict:
 
 # Request Builder
 class reqBuilder:
-    def __init__(self, subject, bearer, key, secret) -> None:
+    # def __init__(self, subject, bearer, key, secret) -> None:
+    def __init__(self, subject, bearer) -> None:
         self.subject = subject
 
         # Things that we replace
@@ -153,6 +157,6 @@ class reqBuilder:
         # TODO - Assign correct authentication when required
         return epData[epType]['method'](
             self.getURL(epType), 
-            headers=self.bearer_auth,
+            headers=self._bearer_auth,
             params=params
             ).json()

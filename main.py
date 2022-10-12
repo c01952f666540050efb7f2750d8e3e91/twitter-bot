@@ -8,7 +8,7 @@ from twitterLibs.endpoints import *
 from twitterLibs.criteriaBook import *
 from twitterLibs.requestBuilder import reqBuilder
 
-from botFrontend.app import app
+# from botFrontend.app import app
 
 # Load .env
 load_dotenv()
@@ -63,7 +63,6 @@ def responseParser(response, checkType=None):
 
 # app.run_server(debug=True)
 
-exit()
 headers = {"Authorization": f"Bearer {bearer}"}
 
 twitter_agent = reqBuilder(support_acc_id, bearer)

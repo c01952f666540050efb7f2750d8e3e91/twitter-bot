@@ -16,14 +16,13 @@ def urlSearch(stringinput):
  #return the found website url
  return [url[0] for url in urlsrc]
 
-def linkShared(text):
-
+def linkShared(text):    
+    
     # The data we are looking to return
     ret_dat = {
         'bool': False,
         'fullLinkS': []
     }
-    
 
     # Since all links on twitter are shortened, we look for the shortened tweet
     if tco in text:
@@ -39,9 +38,11 @@ def linkShared(text):
                     #  A DOMAIN HAS A HIT
                     ret_dat['bool'] = True
 
-                    # ADD IT TO THE LIST
-                    ret_dat['fullLinks'].append(url)
-        
+                    if 'fullLinks' in ret_dat:
+                        # ADD IT TO THE LIST
+                        ret_dat['fullLinks'].append(url)
+                    else:
+                        pass
     return ret_dat
 
 # This has already been answered by Ledger Support

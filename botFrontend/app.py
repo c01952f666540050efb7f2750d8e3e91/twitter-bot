@@ -24,6 +24,8 @@ def providePinCode(inputValue):
     Output(component_id="oauth-link", component_property="children"),
     Input(component_id="")
 )
+def testCallback():
+    return None
 
 # We will want to make multiple callbacks
 # The first will be for authentication and to begin running the bot
