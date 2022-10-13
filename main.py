@@ -25,6 +25,7 @@ linkWatch = {}
 # Response Parser
 def responseParser(response, checkType=None):
 
+    # List of tweets
     tweetList = []
 
     # For all the tweets in the response
@@ -43,13 +44,17 @@ def responseParser(response, checkType=None):
                     # Debug print
                     print(ret_dat)
                     print(tweet['id'])
+                    print(tweet['text'])
 
                     # Perform some action
                     # post_dat = tweetCriteria[condition]['action']()
             else:
 
                 # To make sure we have a specific list
-                ret_dat = {'fullLinks': []}
+                ret_dat = {
+                    'bool': False,
+                    'fullLinks': []
+                    }
 
         print("---"*20)
 
