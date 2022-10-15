@@ -4,6 +4,15 @@ To set up this twitter bot, it is currently run through a dash frontend, that in
 
 I seem to have forgotten what I'm doing lol.
 
+## TO DO LIST
+
+- Finish posting functionality
+- Develop Front End to allow log in using own details and allow bot to run
+    - Integrate PIN entry
+    - Allow front end to start bot
+- Add custom criteria and response list
+- Document all of this
+
 ## Requirements
 
 Python 3
