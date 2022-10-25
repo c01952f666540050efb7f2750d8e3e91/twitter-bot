@@ -6,10 +6,16 @@ I seem to have forgotten what I'm doing lol.
 
 ## TO DO LIST
 
-- Finish posting functionality
 - Develop Front End to allow log in using own details and allow bot to run
     - Integrate PIN entry
-    - Allow front end to start bot
+    - Create the ability to log in
+
+
+- Finish posting functionality
+- Can develop test functionality to manually post tweets
+- We can therefore develop our reteweet and quote retweet functionalities (we probably wouldn't user it though)
+
+- Allow front end to start bot    
 - Add custom criteria and response list
 - Document all of this
 
