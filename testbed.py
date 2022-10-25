@@ -1,6 +1,6 @@
 # I will need to contstruct a authoriseurl
 import requests as req
-from twitterLibs.endpoints import baseurl, epdata
+from twitterLibs.endpoints import baseurl, epData
 from dotenv import load_dotenv
 import os
 from requests_oauthlib import OAuth1Session
