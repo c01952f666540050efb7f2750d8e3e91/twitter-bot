@@ -1,7 +1,16 @@
+from ctypes.wintypes import PINT
 from dash import Dash, dcc, html, Input, Output, State, dcc
 import dash_bootstrap_components as dbc
 from dash_bootstrap_components._components.Container import Container
 import base64
+
+# How we want this to work:
+# We have a link in the navbar top right - asking if you want to login
+# if you select the link, you're taken to the correct page so that
+# you can input your pin
+# once you've done that, the pin input dissappears and you will be navigated to
+# the twitter dashboard accordingly
+
 
 # Added dark theme
 app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
@@ -12,9 +21,9 @@ encoded_image = base64.b64encode(open(logo_fp, 'rb').read())
 
 
 # Search Bar
-search_bar = dbc.Row(
+pin_bar = dbc.Row(
     [
-        dbc.Col(dbc.Input(type="search", placeholder="Search")),
+        dbc.Col(dbc.Input(type="password", placeholder="Enter PIN")),
         dbc.Col(
             dbc.Button(
                 "Search", color="primary", className="ms-2", n_clicks=0
@@ -26,6 +35,7 @@ search_bar = dbc.Row(
     align="center",
 )
 
+# Nav Bar
 navbar = dbc.Navbar(
     dbc.Container(
         [
@@ -42,9 +52,11 @@ navbar = dbc.Navbar(
                 href="http://localhost:8050",
                 style={"textDecoration": "none"},
             ),
+            # Update the below so it only shows when required - we will need to get the state of the oauth login somehow
             dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
+            dbc.NavItem(dbc.NavLink("Get PIN", href="#")),
             dbc.Collapse(
-                search_bar,
+                pin_bar,
                 id="navbar-collapse",
                 is_open=False,
                 navbar=True,
@@ -66,6 +78,13 @@ def toggle_navbar_collapse(n, is_open):
         return not is_open
     return is_open
 
+# button callback
+@app.callback(
+    Output('app2', 'children'),
+    Input('pin-code', 'value')
+)
+def update_output(value):
+    return [f'The input value was {value}']
 
 
 # Current input DIV
@@ -79,8 +98,10 @@ app.layout = html.Div([
             type="password"
             )
     ]),
+    html.Button('Submit', id='submit-val', n_clicks=0),
     html.Br(),
-    html.Div(id="app")
+    html.Div(id="app"),
+    html.Div(id="app2")
 ])
 
 # Current SHOW PIN div - testing

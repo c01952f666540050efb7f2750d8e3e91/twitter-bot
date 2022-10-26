@@ -65,6 +65,7 @@ oauth = OAuth1Session(
 # Making the request
 response = oauth.post(
     "https://api.twitter.com/2/tweets",
+    # We can replace this text with what we want
     json={'text': "Testing out the twitter api..."},
 )
 
