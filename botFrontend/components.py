@@ -35,6 +35,7 @@ pin_request = dbc.Button(
     id="pin-request",
     color="primary",
     className="ms-2",
+    target="contentContainer",
     n_clicks=0
 )
 
