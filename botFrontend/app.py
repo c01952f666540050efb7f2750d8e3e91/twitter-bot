@@ -1,5 +1,6 @@
 # Dash imports
 from dash import Dash, dcc, html, Input, Output, State, dcc, ctx
+import dash
 import dash_bootstrap_components as dbc
 from dash_bootstrap_components._components.Container import Container
 
@@ -16,18 +17,6 @@ import flask
 # Internal imports
 from components import *
 
-# Load .env
-load_dotenv(dotenv_path="../")
-bearer = os.getenv("BEARER")
-support_acc_id = os.getenv("SUPPORT_ACC_ID")
-ledger_acc_id = os.getenv("LEDGER_ACC_ID")
-
-agent_key = os.getenv("API_KEY")
-agent_secret = os.getenv("API_SECRET")
-
-request_token_url = "https://api.twitter.com/oauth/request_token?oauth_callback=oob&x_auth_access_type=write"
-base_authorization_url = "https://api.twitter.com/oauth/authorize"
-
 token_req = False
 # How we want this to work:
 # We have a link in the navbar top right - asking if you want to login
@@ -37,59 +26,11 @@ token_req = False
 # the twitter dashboard accordingly
 
 # Added dark theme
-app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-
-@app.callback(
-    Output(component_id="main-window", component_property="children"),
-    [
-        Input("pin-request", "n_clicks")
-    ],
-    prevent_initial_call = False
+app = Dash(
+    __name__, 
+    external_stylesheets=[dbc.themes.DARKLY],
+    use_pages=True
 )
-def contentWindowManager(clickNumber):
-    msg = "button not pressed"
-    authorization_url=""
-
-    
-
-    # When Request PIN Button is pressed
-    if "pin-request" == ctx.triggered_id:
-        # Get Request token
-        oauth = OAuth1Session(agent_key, client_secret=agent_secret)
-
-        # Attempt to fetch
-        try:
-            fetch_response = oauth.fetch_request_token(request_token_url)
-        except ValueError:
-            print(
-                "There may have been an issue with the consumer_key or consumer_secret you entered."
-            )
-
-        # set key and secret
-        resource_owner_key = fetch_response.get("oauth_token")
-        resource_owner_secret = fetch_response.get("oauth_token_secret")
-
-        # Update bool
-        token_req = True
-
-        # Get Auth URL - redirect here
-        authorization_url = oauth.authorization_url(base_authorization_url)
-
-        # Temp print
-        print("clicked!")
-
-        return dbc.Container(
-            html.Div(
-                id="contentContainer"
-            )
-        )
-
-    return html.Div(
-        "Nothing"
-    )
-    # return html.Div(
-    #         "html.A("Open to Authorise", href=authorization_url, target="_blank")"
-    #     )
 
 
 # We will want to make multiple callbacks
@@ -98,11 +39,21 @@ def contentWindowManager(clickNumber):
 # Who we're responding to
 # It will be nice to know what kind of scams are out there as well
 
+# Callback to begin bot loop - TODO
+# @app.callback(
+#     Output(component_id="main-window", component_property="children"),
+#     [
+#         Input("pin-request", "n_clicks")
+#     ],
+#     prevent_initial_call = False
+# )
+# def runBot(clickNumber):
+#     return None
+
 # Main app layout
 app.layout = html.Div([
     navbar,
-    html.Br(),
-    html.Div(id="main-window")
+    dash.page_container,
 ])
 
 # To Run, use below:

@@ -30,15 +30,6 @@ pin_bar = dbc.Row(
     align="center",
 )
 
-pin_request = dbc.Button(
-    "Get PIN",
-    id="pin-request",
-    color="primary",
-    className="ms-2",
-    target="contentContainer",
-    n_clicks=0
-)
-
 # Nav Bar
 navbar = dbc.Navbar(
     dbc.Container(
@@ -48,7 +39,7 @@ navbar = dbc.Navbar(
                 dbc.Row(
                     [
                         dbc.Col(html.Img(src=logo_fp, height="30px")),
-                        dbc.Col(dbc.NavbarBrand("Ledger Protect Twitter Bot Frontend (v0.01)", className="ms-2")),
+                        dbc.Col(dbc.NavbarBrand("Ledger Twitter Bot (v0.01)", className="ms-2")),
                     ],
                     align="center",
                     className="g-0",
@@ -57,9 +48,7 @@ navbar = dbc.Navbar(
                 style={"textDecoration": "none"},
             ),
             # Update the below so it only shows when required - we will need to get the state of the oauth login somehow
-            dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
-            pin_request,  # Use this as link to get PIN on mainscreen
-            pin_bar
+            dbc.NavbarToggler(id="navbar-toggler", n_clicks=0)
         ]
     ),
     color="dark",
