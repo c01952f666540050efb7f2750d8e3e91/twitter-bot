@@ -40,6 +40,7 @@ authorization_url = oauth.authorization_url(base_authorization_url)
 print("Please go here and authorize: %s" % authorization_url)
 verifier = input("Paste the PIN here: ")
 
+
 # Get the access token
 access_token_url = "https://api.twitter.com/oauth/access_token"
 oauth = OAuth1Session(

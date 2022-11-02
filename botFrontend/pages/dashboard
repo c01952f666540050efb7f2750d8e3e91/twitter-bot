@@ -1,0 +1,16 @@
+import dash
+from dash import Dash, dcc, html, Input, Output, State, dcc, ctx, callback
+import dash_bootstrap_components as dbc
+
+# Register Page
+dash.register_page(
+    __name__,
+    path="/dashboard",
+    title="Dashboard",
+    name="Dashboard Page"
+)
+
+# Layout
+layout = html.Div(
+    id="dashboard-content"
+)

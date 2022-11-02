@@ -1,28 +1,9 @@
 from dash import dcc, html, Input, Output, dcc, ctx, register_page, callback
 import dash_bootstrap_components as dbc
 
-import os
-from dotenv import load_dotenv
-import os
-from requests_oauthlib import OAuth1Session
-import json
-import flask
+from pages.auth import authorisation
 
-# Load .env
-load_dotenv(dotenv_path="../")
-bearer = os.getenv("BEARER")
-support_acc_id = os.getenv("SUPPORT_ACC_ID")
-ledger_acc_id = os.getenv("LEDGER_ACC_ID")
-
-agent_key = os.getenv("API_KEY")
-agent_secret = os.getenv("API_SECRET")
-
-request_token_url = "https://api.twitter.com/oauth/request_token?oauth_callback=oob&x_auth_access_type=write"
-base_authorization_url = "https://api.twitter.com/oauth/authorize"
-access_token_url = "https://api.twitter.com/oauth/access_token"
-
-resource_owner_key = None
-resource_owner_secret = None
+twitterAuth = authorisation()
 
 # Register Page
 register_page(
@@ -30,13 +11,14 @@ register_page(
     path="/"
 )
 
-# pin_request = 
-
+# Layout
 layout = html.Div(children=[
+    # title
     html.H2(
         "You have not authorised this application",
         style={'textAlign': 'center'}
     ),
+    # Main text
     html.P(
         [
             "Please press the below button to get the correct URL. You'll be then",
@@ -90,7 +72,16 @@ layout = html.Div(children=[
                     html.Td(),
                     html.Td(
                         id="auth-content",
-                        rowSpan="3",
+                        style={
+                            "textAlign": "center"
+                        }
+                    ),
+                    html.Td()
+                ]),
+                html.Tr([
+                    html.Td(),
+                    html.Td(
+                        id="landing-content",
                         style={
                             "textAlign": "center"
                         }
@@ -117,29 +108,10 @@ def contentWindowManager(clickNumber):
 
     # When Request PIN Button is pressed
     if "pin-request" == ctx.triggered_id:
-        # Get Request token
-        oauth = OAuth1Session(agent_key, client_secret=agent_secret)
-
-        # Attempt to fetch
-        try:
-            fetch_response = oauth.fetch_request_token(request_token_url)
-        except ValueError:
-            print(
-                "There may have been an issue with the consumer_key or consumer_secret you entered."
-            ),
-
-        # set key and secret
-        resource_owner_key = fetch_response.get("oauth_token")
-        resource_owner_secret = fetch_response.get("oauth_token_secret")
-
-        # Update bool
-        token_req = True
+       
 
         # Get Auth URL - redirect here
         authorization_url = oauth.authorization_url(base_authorization_url)
-
-        # Temp print
-        print("clicked!")
 
         return html.Div(
             children=[
@@ -155,31 +127,47 @@ def contentWindowManager(clickNumber):
     return None
 
 @callback(
-    Output(component_id="placeholder-000", component_property="children"),
+    Output(component_id="landing-content", component_property="children"),
     [
         Input("pin-submit-button", "n_clicks"),
-        Input("pin-code", "value")
+        Input(component_id="pin-code", component_property="value")
     ],
     # Do not immediately initialise
     prevent_initial_call = False
 )
 def pinSubmit(nClicks, pinValue):
-    # Finish completing the authorisation
-    oauth = OAuth1Session(
-        agent_key,
-        client_secret=agent_secret,
-        resource_owner_key=resource_owner_key,
-        resource_owner_secret=resource_owner_secret,
-        verifier=pinValue,
-    )
 
-    oauth_tokens = oauth.fetch_access_token(access_token_url)
+    # If button is clicked
+    if "pin-submit-button" == ctx.triggered_id:
+        oauth = OAuth1Session(
+            agent_key,
+            client_secret=agent_secret,
+            resource_owner_key=resource_owner_key,
+            resource_owner_secret=resource_owner_secret,
+            verifier=pinValue
+        )
+    
+        oauth_tokens = oauth.fetch_access_token(access_token_url)
 
-    oauth = OAuth1Session(
-        agent_key,
-        client_secret=agent_secret,
-        resource_owner_key=oauth_tokens["oauth_token"],
-        resource_owner_secret=oauth_tokens["oauth_token_secret"],
-    )
+        access_token = oauth_tokens["oauth_token"]
+        access_token_secret = oauth_tokens["oauth_token_secret"]
 
-    return
+        oauth = OAuth1Session(
+            agent_key,
+            client_secret=agent_secret,
+            resource_owner_key=access_token,
+            resource_owner_secret=access_token_secret
+        )
+
+
+        # TODO - Find out what we want to return - otherwise we will create class
+        return html.Div(
+            children=[
+                dcc.Location(
+                    id="landing-content",
+                    href="/dashboard"
+                )
+            ]
+        )
+    
+    return None
