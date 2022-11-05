@@ -2,10 +2,8 @@ from dash import dcc, html, Input, Output, dcc, ctx, register_page, callback
 import dash
 import dash_bootstrap_components as dbc
 
-from pages.auth import authorisation
-
-# Create authorisation object
-twitterAuth = authorisation()
+# internal import
+from app import twitterAuth
 
 # Register Page
 register_page(
@@ -126,7 +124,11 @@ def contentWindowManager(clickNumber):
         )
 
     # Return Nothing when nothing is pressed
-    return None
+    return html.Div(
+        children=[
+            html.Br()
+        ]
+    )
 
 @callback(
     Output(component_id="landing-content", component_property="children"),
@@ -135,7 +137,7 @@ def contentWindowManager(clickNumber):
         Input(component_id="pin-code", component_property="value")
     ],
     # Do not immediately initialise
-    prevent_initial_call = False
+    prevent_initial_call = True
 )
 def pinSubmit(nClicks, pinValue):
 
@@ -154,4 +156,8 @@ def pinSubmit(nClicks, pinValue):
             ]
         )
     
-    return None
+    return html.Div(
+        children=[
+            html.Br()
+        ]
+    )

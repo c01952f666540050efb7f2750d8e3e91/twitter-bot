@@ -54,4 +54,3 @@ navbar = dbc.Navbar(
     color="dark",
     dark=True
 )
-

@@ -1,7 +1,3 @@
-import dash
-from dash import Dash, dcc, html, Input, Output, State, dcc, ctx, callback
-import dash_bootstrap_components as dbc
-
 from dotenv import load_dotenv
 import os
 from requests_oauthlib import OAuth1Session
@@ -12,10 +8,6 @@ load_dotenv(dotenv_path="../.env")
 class authorisation:
     def __init__(self):
         # .env varibales
-        bearer = os.getenv("BEARER")
-        support_acc_id = os.getenv("SUPPORT_ACC_ID")
-        ledger_acc_id = os.getenv("LEDGER_ACC_ID")
-
         self.agent_key = os.getenv("API_KEY")
         self.agent_secret = os.getenv("API_SECRET")
 
