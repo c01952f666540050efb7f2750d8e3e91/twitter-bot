@@ -51,10 +51,14 @@ app = Dash(
 #     return None
 
 # Main app layout
-app.layout = html.Div([
+app.layout = html.Div(children=[
     navbar,
-    dash.page_container,
+    dash.page_container
 ])
+
+for page in dash.page_registry.values():
+    print(page)
+
 
 # To Run, use below:
 app.run_server(debug=True)

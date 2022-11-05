@@ -7,7 +7,7 @@ import os
 from requests_oauthlib import OAuth1Session
 
 # Load .env
-load_dotenv(dotenv_path="../")
+load_dotenv(dotenv_path="../.env")
 
 class authorisation:
     def __init__(self):
@@ -16,8 +16,8 @@ class authorisation:
         support_acc_id = os.getenv("SUPPORT_ACC_ID")
         ledger_acc_id = os.getenv("LEDGER_ACC_ID")
 
-        agent_key = os.getenv("API_KEY")
-        agent_secret = os.getenv("API_SECRET")
+        self.agent_key = os.getenv("API_KEY")
+        self.agent_secret = os.getenv("API_SECRET")
 
         # URLS
         request_token_url = "https://api.twitter.com/oauth/request_token?oauth_callback=oob&x_auth_access_type=write"
@@ -28,12 +28,15 @@ class authorisation:
         self.access_token_secret = None
 
         # Get request token - This can be done at the start of every session?
-        oauth = OAuth1Session(
-            agent_key, 
-            client_secret=agent_secret
+        self.oauth = OAuth1Session(
+            self.agent_key, 
+            client_secret=self.agent_secret
         )
 
-        fetch_response = oauth.fetch_request_token(request_token_url)
+        try:
+            fetch_response = self.oauth.fetch_request_token(request_token_url)
+        except ValueError:
+            print("Something went wrong")
         
         # # Attempt to fetch
         # try:
@@ -66,13 +69,13 @@ class authorisation:
             resource_owner_secret=self.resource_owner_secret,
             verifier=verifier,
         )
-        oauth_tokens = oauth.fetch_access_token(self.access_token_url)
+        oauth_tokens = self.oauth.fetch_access_token(self.access_token_url)
 
         self.access_token = oauth_tokens["oauth_token"]
         self.access_token_secret = oauth_tokens["oauth_token_secret"]
 
         # Make the request
-        oauth = OAuth1Session(
+        self.oauth = OAuth1Session(
             self.agent_key,
             client_secret=self.agent_secret,
             resource_owner_key=self.access_token,

@@ -1,8 +1,10 @@
 from dash import dcc, html, Input, Output, dcc, ctx, register_page, callback
+import dash
 import dash_bootstrap_components as dbc
 
 from pages.auth import authorisation
 
+# Create authorisation object
 twitterAuth = authorisation()
 
 # Register Page
@@ -109,9 +111,9 @@ def contentWindowManager(clickNumber):
     # When Request PIN Button is pressed
     if "pin-request" == ctx.triggered_id:
        
-
+        
         # Get Auth URL - redirect here
-        authorization_url = oauth.authorization_url(base_authorization_url)
+        authorization_url = twitterAuth.getAuthURL()
 
         return html.Div(
             children=[
@@ -139,33 +141,15 @@ def pinSubmit(nClicks, pinValue):
 
     # If button is clicked
     if "pin-submit-button" == ctx.triggered_id:
-        oauth = OAuth1Session(
-            agent_key,
-            client_secret=agent_secret,
-            resource_owner_key=resource_owner_key,
-            resource_owner_secret=resource_owner_secret,
-            verifier=pinValue
-        )
-    
-        oauth_tokens = oauth.fetch_access_token(access_token_url)
-
-        access_token = oauth_tokens["oauth_token"]
-        access_token_secret = oauth_tokens["oauth_token_secret"]
-
-        oauth = OAuth1Session(
-            agent_key,
-            client_secret=agent_secret,
-            resource_owner_key=access_token,
-            resource_owner_secret=access_token_secret
-        )
-
+        twitterAuth.submitPin(pinValue)
 
         # TODO - Find out what we want to return - otherwise we will create class
         return html.Div(
             children=[
-                dcc.Location(
+                dcc.Link(
+                    "Go to dashboard",
                     id="landing-content",
-                    href="/dashboard"
+                    href=dash.page_registry['pages.dashboard']['path']
                 )
             ]
         )
